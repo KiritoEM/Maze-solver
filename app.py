@@ -5,11 +5,10 @@ from models.Maze import Maze
 def main():
     window_width = 850
     window_height = 700
-    cellRows = 17
-    cellCols = 21 
+    cellN = 27
 
-    maze = Maze(cellRows, 21)
-    DFS = DFSSolver(maze.getBoard(), cellRows, cellCols)
+    maze = Maze(cellN)
+    DFS = DFSSolver(maze.getBoard(), cellN)
     game = Game(window_width, window_height, maze, DFS)
     
     # Start the game

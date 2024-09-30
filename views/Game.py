@@ -7,16 +7,15 @@ class Game:
         self.window_height = window_height
         self.maze = maze
         self.DFS = DFS
-        self.cellRows = maze.cellRows
-        self.cellCols = maze.cellCols
-        self.cell_width = window_width / self.cellRows
-        self.cell_height = window_height / self.cellCols
+        self.cellN = maze.cellN
+        self.cell_width = window_width / self.cellN
+        self.cell_height = window_height / self.cellN
         self.black = pygame.Color("black")
         self.white = pygame.Color("white")
         self.orange = pygame.Color("darkorange")
         self.window = None
 
-        print(self.cell_height, maze.cellCols)
+        print(self.cell_height, maze.cellN)
 
     def draw_cell(self, row, col, color):
         pygame.draw.rect(self.window, color, (col * self.cell_width, row * self.cell_height, self.cell_width, self.cell_height))
@@ -25,14 +24,14 @@ class Game:
         pygame.draw.circle(self.window, color, (col * self.cell_width + self.cell_width // 2, row * self.cell_height + self.cell_height // 2), 14)
 
     def draw_grid(self):
-        for i in range(self.cellRows + 1):
+        for i in range(self.cellN + 1):
             pygame.draw.line(self.window, self.orange, (0, i * self.cell_height), (self.window_width, i * self.cell_height))
-        for j in range(self.cellCols + 1):
+        for j in range(self.cellN + 1):
             pygame.draw.line(self.window, self.orange, (j * self.cell_width, 0), (j * self.cell_width, self.window_height))
 
     def draw_board(self):
-        for i in range(self.cellRows):
-            for j in range(self.cellCols):
+        for i in range(self.cellN):
+            for j in range(self.cellN):
                 if self.maze.board[i][j] == 0:  # Path
                     self.draw_cell(i, j, self.black)
                 else:
@@ -49,7 +48,7 @@ class Game:
             self.draw_board() 
             self.draw_circle(row, col, self.white)  
             pygame.display.update()
-            time.sleep(0.4)  
+            pygame.time.wait(70)  
     
     def start(self):
         pygame.init()
@@ -60,6 +59,7 @@ class Game:
         self.maze.generate_maze(0, 0, self)
 
         path = self.DFS.dfs(0, 0)  
+        print("path: ", path, "\n")
         self.DFS.print_solution()  
 
         RUNNING = True

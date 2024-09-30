@@ -2,15 +2,14 @@ from random import choice, shuffle
 import pygame
 
 class Maze:
-    def __init__(self, cellRows, cellCols):
-        self.cellRows = cellRows
-        self.cellCols = cellCols
-        self.board = [[1] * cellCols for _ in range(cellRows)]
-        self.visited = [[False] * cellCols for _ in range(cellRows)]
+    def __init__(self, cellN):
+        self.cellN = cellN
+        self.board = [[1] * cellN for _ in range(cellN)]
+        self.visited = [[False] * cellN for _ in range(cellN)]
         self.stack = []
 
     def check_cell(self, x, y):
-        if 0 <= x < self.cellRows and 0 <= y < self.cellCols:
+        if 0 <= x < self.cellN and 0 <= y < self.cellN:
             return not self.visited[x][y]
         return False
 
