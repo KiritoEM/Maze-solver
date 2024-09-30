@@ -1,6 +1,5 @@
 import pygame
-
-import pygame
+import time
 
 class Game:
     def __init__(self, window_width, window_height, maze, DFS):
@@ -17,12 +16,13 @@ class Game:
         self.orange = pygame.Color("darkorange")
         self.window = None
 
+        print(self.cell_height, maze.cellCols)
+
     def draw_cell(self, row, col, color):
         pygame.draw.rect(self.window, color, (col * self.cell_width, row * self.cell_height, self.cell_width, self.cell_height))
     
     def draw_circle(self, row, col, color):
         pygame.draw.circle(self.window, color, (col * self.cell_width + self.cell_width // 2, row * self.cell_height + self.cell_height // 2), 14)
-
 
     def draw_grid(self):
         for i in range(self.cellRows + 1):
@@ -34,9 +34,9 @@ class Game:
         for i in range(self.cellRows):
             for j in range(self.cellCols):
                 if self.maze.board[i][j] == 0:  # Path
-                    self.draw_cell(i, j, self.white)
-                else:
                     self.draw_cell(i, j, self.black)
+                else:
+                    self.draw_cell(i, j, self.orange)
         # self.draw_grid()
 
     def update_display(self):
@@ -44,16 +44,22 @@ class Game:
         self.draw_board()
         pygame.display.update()
 
+    def move_circle_along_path(self, path):
+        for (row, col) in path:
+            self.draw_board() 
+            self.draw_circle(row, col, self.white)  
+            pygame.display.update()
+            time.sleep(0.4)  
+    
     def start(self):
         pygame.init()
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("Maze Solver")
-        self.window.fill(self.white)
+        self.window.fill(self.black)
 
         self.maze.generate_maze(0, 0, self)
-        # self.maze.print_maze()
 
-        self.DFS.dfs(0, 0)  
+        path = self.DFS.dfs(0, 0)  
         self.DFS.print_solution()  
 
         RUNNING = True
@@ -61,8 +67,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     RUNNING = False
-
-            self.draw_board()
+            
+            self.move_circle_along_path(path)
             pygame.display.update()
 
         pygame.quit()

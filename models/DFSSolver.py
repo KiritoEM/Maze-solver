@@ -1,4 +1,4 @@
-from .Maze import Maze
+import pygame
 
 class DFSSolver:
     def __init__(self, maze, cellRows, cellColsols):
@@ -23,6 +23,7 @@ class DFSSolver:
         
         return possible_directions if len(possible_directions) > 0 else []
 
+ 
     def dfs(self, start_x, start_y):
         self.stack = [(start_x, start_y)]
         self.paths = [(start_x, start_y)]
@@ -33,22 +34,20 @@ class DFSSolver:
 
             if x == self.cellRows - 1 and y == self.cellColsols - 1: #point d' arrivée
                 self.paths.append((x, y)) 
-                return True 
-        
+                return self.paths 
+            
             directions = self.check_directions(x, y)
 
             if len(directions) > 0: 
                 new_x, new_y = directions.pop()
                 self.paths.append((new_x, new_y))
                 self.visited[new_x][new_y] = True
-                self.paths.append((new_x, new_y))
                 self.stack.append((new_x, new_y)) 
             else:
                 self.stack.pop()  
                 self.paths.pop()      
-            
 
-        return False
+        return self.paths  
 
     def print_solution(self):
         for row in self.visited:

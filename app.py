@@ -8,7 +8,7 @@ def main():
     cellRows = 17
     cellCols = 21 
 
-    maze = Maze(cellRows, cellCols)
+    maze = Maze(cellRows, 21)
     DFS = DFSSolver(maze.getBoard(), cellRows, cellCols)
     game = Game(window_width, window_height, maze, DFS)
     
