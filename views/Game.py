@@ -1,5 +1,4 @@
 import pygame
-import time
 
 class Game:
     def __init__(self, window_width, window_height, maze, DFS):
