@@ -1,5 +1,5 @@
-from random import choice, shuffle
 import pygame
+from random import choice, shuffle
 
 class Maze:
     def __init__(self, cellN):
@@ -42,6 +42,7 @@ class Maze:
             if neighbor:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
+                        pygame.quit()
                         return
 
                 nx, ny = neighbor
