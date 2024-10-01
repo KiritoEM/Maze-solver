@@ -11,9 +11,9 @@ https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 
 ## Fonctionnalités disponibles
 - [X] Génération de labyrinth utilisant DFS 
-- [X] Bot resolver utilisant DFS solving
-- [ ] Bot resolver utilisant DFS A*
-- [ ] Bot resolver utilisant DFS BFS
+- [X] Bot resolver utilisant DFS 
+- [ ] Bot resolver utilisant A*
+- [ ] Bot resolver utilisant BFS
 
 ## Installation et utilisation
 
