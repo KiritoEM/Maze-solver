@@ -23,7 +23,7 @@ https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
    git clone https://github.com/KiritoEM/Maze-solver-DFS
    ```
     
-3. Installer les dépendences et lancer l'application
+3. Installer les dépendances et lancer l'application
    ```js
    pip install pygame
    python3 app.py ou python app.py
