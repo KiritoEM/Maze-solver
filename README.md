@@ -1,6 +1,6 @@
 # Maze Solver
 
-Algorithme de DFS pour permettre à un bot de resolver un labyrinthe
+Algorithme en python pour permettre à un bot de resolver un labyrinthe
 
 https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 
