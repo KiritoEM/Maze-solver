@@ -9,12 +9,6 @@ https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 - python3
 - pip 
 
-   ```
--sur windows(optionnel):
-   ```bash
-   npm install -g windows-build-tools
-   ```
-
 ## Fonctionnalités disponibles
 - [X] Génération de labyrinth utilisant DFS 
 - [X] Bot resolver utilisant DFS solving
