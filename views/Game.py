@@ -1,65 +1,92 @@
 import pygame
+from helpers.constant import color
 
 class Game:
-    def __init__(self, window_width, window_height, maze, DFS):
+    def __init__(self, window_width, window_height, maze, algo):
         self.window_width = window_width
         self.window_height = window_height
         self.maze = maze
-        self.DFS = DFS
+        self.algo = algo
         self.cellN = maze.cellN
         self.cell_width = window_width / self.cellN
         self.cell_height = window_height / self.cellN
         self.black = pygame.Color("black")
         self.white = pygame.Color("white")
+        self.blue = pygame.Color("blue")
         self.orange = pygame.Color("darkorange")
-        self.green = pygame.Color("green")
+        self.brown = pygame.Color(color["BROWN"])
+        self.grey = pygame.Color(color["GREY"])
+        self.green = pygame.Color(color["GREEN"])
+        self.red = pygame.Color(color["RED"])
         self.window = None
-
-        print(self.cell_height, maze.cellN)
+        self.startPosition = (0, 0)
+        self.finalPosition = (self.cellN - 1, self.cellN - 1)
 
     def draw_cell(self, row, col, color):
-        pygame.draw.rect(self.window, color, (col * self.cell_width, row * self.cell_height, self.cell_width, self.cell_height))
+        pygame.draw.rect(self.window, color, (col * self.cell_width, row * self.cell_height, self.cell_width + 1, self.cell_height + 1))
 
-    def draw_circle(self, row, col, color):
-        pygame.draw.circle(self.window, color, (col * self.cell_width + self.cell_width // 2, row * self.cell_height + self.cell_height // 2), 14)
+    def draw_bot(self, row, col, color):
+        bot_width = self.cell_width // 2
+        bot_height = self.cell_height // 2
+        bot_x = (col * self.cell_width) + (self.cell_width - bot_width) // 2
+        bot_y = (row * self.cell_height) + (self.cell_height - bot_height) // 2
+        pygame.draw.rect(self.window, color, (bot_x, bot_y, bot_width, bot_height))
 
-    def draw_grid(self):
-        for i in range(self.cellN + 1):
-            for j in range(self.cellN + 1):
-                if i < self.cellN and j < self.cellN and self.maze.board[i][j] == 1:  # Wall
-                    pygame.draw.line(self.window, self.orange, (j * self.cell_width, i * self.cell_height), ((j + 1) * self.cell_width, i * self.cell_height))
-                    pygame.draw.line(self.window, self.orange, (j * self.cell_width, i * self.cell_height), (j * self.cell_width, (i + 1) * self.cell_height))
 
-    def draw_board(self):
+    def draw_grid_on_walls(self):
         for i in range(self.cellN):
             for j in range(self.cellN):
-                if self.maze.board[i][j] == 0:  # Path
-                    self.draw_cell(i, j, self.black)
-                else:
-                    self.draw_cell(i, j, self.orange)
-        self.draw_grid()
+                if self.maze.maze[i][j] == 1:
+                    pygame.draw.line(self.window, self.brown, (j * self.cell_width, i * self.cell_height), ((j + 1) * self.cell_width, i * self.cell_height), 3)
+                    pygame.draw.line(self.window, self.brown, (j * self.cell_width, i * self.cell_height), (j * self.cell_width, (i + 1) * self.cell_height), 3)
+                    pygame.draw.line(self.window, self.brown, ((j + 1) * self.cell_width, i * self.cell_height), ((j + 1) * self.cell_width, (i + 1) * self.cell_height), 3)
+                    pygame.draw.line(self.window, self.brown, (j * self.cell_width, (i + 1) * self.cell_height), ((j + 1) * self.cell_width, (i + 1) * self.cell_height), 3)
 
     def update_display(self):
-        self.window.fill(self.black)
-        self.draw_board()
+        self.draw_maze()
         pygame.display.flip()
 
-    def draw_path(self, path):
-        self.draw_board()
-        for (row, col) in path:
-            self.draw_cell(row, col, self.green)
-            pygame.display.update()
-            pygame.time.wait(150)
+    def move_bot(self, path):
+        self.draw_maze()
+        for step in path:
+            if len(step) == 2:
+                self.update_display()
+                row, col = step
+                self.draw_bot(row, col, self.green)
+                pygame.display.update()
+                pygame.time.wait(150)
+            elif len(step) == 3:
+                self.update_display()
+                row, col, action = step
+                if action == "backtrack":
+                    self.draw_bot(row, col, self.red)
+                    pygame.display.update()
+                    pygame.time.wait(190) #bot speed
+
+    def draw_maze(self):
+        for i in range(self.cellN):
+            for j in range(self.cellN):
+                if self.maze.maze[i][j] == 0:
+                    self.draw_cell(i, j, self.black)
+                else:
+                    self.draw_cell(i, j, self.grey)
+        self.draw_grid_on_walls()
+        end_x, end_y = self.finalPosition
+
+        self.draw_cell(end_x, end_y, self.red)
 
     def start(self):
         pygame.init()
         self.window = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption("Maze Solver")
-        self.window.fill(self.black)
+        self.window.fill(self.brown)
 
-        self.maze.generate_maze(0, 0, self)
+        start_x, start_y = self.startPosition
+        end_x, end_y = self.finalPosition
 
-        path = self.DFS.solve(self.cellN - 1, self.cellN - 1)
+        self.maze.generate_maze(start_x, start_y, self) # maze Generating
+
+        path = self.algo.solve(start_x, start_y, end_x, end_y) #algo solving
 
         RUNNING = True
         while RUNNING:
@@ -68,8 +95,8 @@ class Game:
                     RUNNING = False
 
             if path:
-                self.draw_path(path)
-                RUNNING = False  
+                self.move_bot(path)
+                RUNNING = False
 
             pygame.display.update()
 
@@ -79,4 +106,4 @@ class Game:
                     pygame.quit()
                     return
 
-            pygame.display.update()
+            pygame.display.flip()
