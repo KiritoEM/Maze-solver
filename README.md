@@ -1,6 +1,6 @@
-# Nextron-CLI
+# Maze Solver
 
-Bienvenue sur Nextron-CLI ❕, un petit outil qui vous permet de récupérer directement quelques templates d'applications depuis GitHub par CLI.
+Algorithme de DFS pour permettre à un bot de resolver un labyrinthe
 
 https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 
