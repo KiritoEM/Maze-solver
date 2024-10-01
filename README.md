@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 - pip 
 
 ## Fonctionnalités disponibles
-- [X] Génération de labyrinth utilisant DFS 
+- [X] Génération de labyrinthe random utilisant DFS 
 - [X] Bot resolver utilisant DFS 
 - [ ] Bot resolver utilisant A*
 - [ ] Bot resolver utilisant BFS
