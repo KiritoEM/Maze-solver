@@ -12,8 +12,8 @@ https://github.com/user-attachments/assets/aaf8d33c-6aec-4299-9a1d-22cd25d6c086
 ## Fonctionnalités disponibles
 - [X] Génération de labyrinthe random utilisant DFS 
 - [X] Bot resolver utilisant DFS 
-- [ ] Bot resolver utilisant A*
-- [ ] Bot resolver utilisant BFS
+- [ ] Bot resolver utilisant  A*
+- [ ] Bot resolver utilisant  BFS
 
 ## Installation et utilisation
 
