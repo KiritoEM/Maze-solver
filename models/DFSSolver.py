@@ -1,52 +1,60 @@
 import pygame
+from helpers.mazeHelper import check_solver_cell
 
 class DFSSolver:
     def __init__(self, maze, cellN):
         self.maze = maze
-        self.visited = [[False] * cellN for _ in range(cellN)]
-        self.cellN = cellN
+        self.visited = [[False] * cellN for _ in range(cellN)] # Defautl False
         self.path = []
+        self.cellN = cellN
 
-    def is_valid_cell(self, x, y):
-        return (0 <= x < self.cellN and
-                0 <= y < self.cellN and
-                self.maze[x][y] == 0 and
-                not self.visited[x][y])
+    def check_neighbors(self, x, y):
+        neighbors = []
+        
+        directions = [(x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1)] # W -> W -> S -> E
 
-    def dfs(self, x, y):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return
+        for nx, ny in directions:
+            if check_solver_cell(self.cellN, self.maze, self.visited,  nx, ny ):
+                neighbors.append((nx, ny))
 
-        if not self.is_valid_cell(x, y):
+        return neighbors if neighbors else []
+
+    def dfs(self, x, y, final_x, final_y):
+        if not check_solver_cell(self.cellN, self.maze,  self.visited,  x, y ): #if visited then false
             return False
+        
+        for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        return
 
         self.visited[x][y] = True
         self.path.append((x, y))
 
-        if (x, y) == (0, 0):
+        if (x, y) == (final_x, final_y): # Check if finished maze
             return True
+        
+        neighbors  = self.check_neighbors(x, y)
 
-        directions = [(-1, 0), (0, -1), (0, 1), (1, 0)]
-        for dx, dy in directions:
-            new_x, new_y = x + dx, y + dy
-            if self.dfs(new_x, new_y):
-                return True
+        for new_x, new_y in neighbors:
+                if self.dfs(new_x, new_y, final_x, final_y):
+                    return True
 
-        self.path.pop()
+        self.path.append((x, y, "backtrack")) # Backtracking
         return False
 
-    def solve(self, start_x=0, start_y=0):
+    def solve(self, start_x, start_y, final_x, final_y):
         self.path = []
         self.visited = [[False] * self.cellN for _ in range(self.cellN)]
-        if self.dfs(start_x, start_y):
+        if self.dfs(start_x, start_y, final_x, final_x):
             return self.path
         else:
             return []
 
     def print_solution(self):
-        """Affiche le chemin trouvé."""
+        print(self.path)
         for row in self.visited:
             print(' '.join(str(int(cell)) for cell in row))
         print("\n")
+
+
