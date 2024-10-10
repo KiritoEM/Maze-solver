@@ -40,7 +40,8 @@ class DFSSolver:
                 if self.dfs(new_x, new_y, final_x, final_y):
                     return True
 
-        self.path.append((x, y, "backtrack")) # Backtracking
+        # self.path.append((x, y, "backtrack")) # Backtracking
+        self.path.pop()
         return False
 
     def solve(self, start_x, start_y, final_x, final_y):
