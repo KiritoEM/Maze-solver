@@ -15,8 +15,7 @@ class BFSSolver:
         self.queue.append((start_x, start_y, [(start_x, start_y)]))
 
         while len(self.queue) > 0 and not self.finished:
-            (curr_x, curr_y, current_path) = self.queue.popleft()  # Dequeue the current position
-            print(f"Visiting: {(curr_x, curr_y)}")
+            (curr_x, curr_y, current_path) = self.queue.popleft()  #shift the current node
 
             if curr_x == des_x and curr_y == des_y:
                 self.path = current_path
@@ -41,14 +40,7 @@ class BFSSolver:
         return neighbors
 
     def print_solution(self):
-        if self.finished:
-            print("Path found:")
-            for pos in self.path:
-                print(pos)
-        else:
-            print("Destination is inaccessible.")
-
-        print("\nVisited matrix:")
+        print(self.path)
         for row in self.visited:
-            print(' '.join(['1' if cell else '0' for cell in row]))
-        print()
+            print(' '.join(str(int(cell)) for cell in row))
+        print("\n")
