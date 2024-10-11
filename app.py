@@ -1,6 +1,6 @@
 from views.Game import Game
-from models.DFSSolver import DFSSolver
-from models.BFSSolver import BFSSolver
+from models.solvers.DFSSolver import DFSSolver
+from models.solvers.BFSSolver import BFSSolver
 from models.Maze import Maze
 import pygame
 
