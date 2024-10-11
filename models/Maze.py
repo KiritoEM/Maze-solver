@@ -9,7 +9,6 @@ class Maze:
         self.visited = [[False] * cellN for _ in range(cellN)]
         self.stack = []
 
-
     def check_neighbors(self, x, y):
         neighbors = []
 

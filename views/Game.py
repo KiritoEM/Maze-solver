@@ -7,7 +7,7 @@ class Game:
         self.window_height = window_height
         self.maze = maze
         self.algo = algo
-        self.cellN = maze.cellN
+        self.cellN = self.maze.cellN
         self.cell_width = window_width / self.cellN
         self.cell_height = window_height / self.cellN
         self.black = pygame.Color("black")
@@ -32,6 +32,7 @@ class Game:
         bot_y = (row * self.cell_height) + (self.cell_height - bot_height) // 2
         pygame.draw.rect(self.window, color, (bot_x, bot_y, bot_width, bot_height))
 
+
     def draw_grid_on_walls(self):
         for i in range(self.cellN):
             for j in range(self.cellN):
@@ -47,25 +48,20 @@ class Game:
 
     def move_bot(self, path):
         self.draw_maze()
-        current_position = None
         for step in path:
             if len(step) == 2:
-                row, col = step
-                if current_position:
-                    self.update_display()
-                    self.draw_bot(current_position[0], current_position[1], self.black)
                 self.update_display()
+                row, col = step
                 self.draw_bot(row, col, self.green)
-                current_position = (row, col)
                 pygame.display.update()
-                pygame.time.wait(350)  
+                pygame.time.wait(190)
             elif len(step) == 3:
                 self.update_display()
                 row, col, action = step
                 if action == "backtrack":
                     self.draw_bot(row, col, self.red)
                     pygame.display.update()
-                    pygame.time.wait(350)  
+                    pygame.time.wait(220) #bot speed
 
     def draw_maze(self):
         for i in range(self.cellN):
@@ -76,6 +72,7 @@ class Game:
                     self.draw_cell(i, j, self.grey)
         self.draw_grid_on_walls()
         end_x, end_y = self.finalPosition
+
         self.draw_cell(end_x, end_y, self.red)
 
     def start(self):
@@ -87,12 +84,10 @@ class Game:
         start_x, start_y = self.startPosition
         end_x, end_y = self.finalPosition
 
-        self.maze.generate_maze(start_x, start_y, self)  # maze Generating
+        self.maze.generate_maze(start_x, start_y, self) # maze Generating
+        self.maze.print_maze()
 
-        self.algo.solve(start_x, start_y, end_x, end_y)  # algo solving
-        path = self.algo.path
-
-        self.algo.print_solution()
+        path = self.algo.solve(start_x, start_y, end_x, end_y) #algo solving
 
         RUNNING = True
         while RUNNING:

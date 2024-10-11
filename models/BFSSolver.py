@@ -1,46 +1,41 @@
 from collections import deque
 import pygame
-from helpers.constant import color
+from .Solver import Solver
 
-class BFSSolver:
+class BFSSolver(Solver):
     def __init__(self, maze, cellN):
+        super().__init__(maze, cellN)
         self.maze = maze
         self.queue = deque()
-        self.visited = [[False] * cellN for _ in range(cellN)]
-        self.path = []
-        self.finished = False
+        self.cellN = cellN
+
+    def get_path(self):
+        print("Path from getter: ", self.path)
+        return self.path
 
     def solve(self, start_x, start_y, des_x, des_y):
+        print("Starting position:", start_x, start_y)
         self.visited[start_x][start_y] = True
         self.queue.append((start_x, start_y, [(start_x, start_y)]))
 
-        while len(self.queue) > 0 and not self.finished:
-            (curr_x, curr_y, current_path) = self.queue.popleft()  #shift the current node
+        while len(self.queue) > 0:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+
+            curr_x, curr_y, curr_path = self.queue.popleft()
 
             if curr_x == des_x and curr_y == des_y:
-                self.path = current_path
-                self.finished = True
-                return
+                self.path = curr_path
+                return self.path
 
             neighbors = self.check_neighbors(curr_x, curr_y)
 
             for n_x, n_y in neighbors:
-                if not self.visited[n_x][n_y] and self.maze[n_x][n_y] == 0:
+                if not self.visited[n_x][n_y] and self.maze[n_x][n_y] == 0 and 0 <= n_x < self.cellN and 0 <= n_y < self.cellN:
                     self.visited[n_x][n_y] = True
-                    self.queue.append((n_x, n_y, current_path + [(n_x, n_y)]))
+                    new_path = curr_path + [(n_x, n_y)]
+                    self.queue.append((n_x, n_y, new_path))
 
-    def check_neighbors(self, x, y):
-        neighbors = []
-        directions = [(x, y - 1), (x - 1, y), (x + 1, y), (x, y + 1)]
-
-        for nx, ny in directions:
-            if 0 <= nx < len(self.maze) and 0 <= ny < len(self.maze[0]) and self.maze[nx][ny] == 0:
-                neighbors.append((nx, ny))
-
-        return neighbors
-
-    def print_solution(self):
-        print(self.path)
-        for row in self.visited:
-            print(' '.join(str(int(cell)) for cell in row))
-        print("\n")
+        return False  

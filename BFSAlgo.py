@@ -58,8 +58,8 @@ class BFS:
             print(' '.join(['1' if cell else '0' for cell in row]))
         print()
 
-# bfs = BFS()
-# start_x, start_y = 0, 0
-# des_x, des_y = 4, 4
-# bfs.solver(start_x, start_y, des_x, des_y)
-# bfs.print_solution()
+bfs = BFS()
+start_x, start_y = 0, 0
+des_x, des_y = 4, 4
+bfs.solver(start_x, start_y, des_x, des_y)
+bfs.print_solution()

@@ -7,12 +7,17 @@ import pygame
 def main():
     window_width = 850
     window_height = 700
-    cellN = 15
+    cellN = int(input("Enter the number of maze grid cell: "))
+    choice = input("DFS ou BFS ?  ")
 
-    maze = Maze(cellN) # Labyrinth class
-    dfs = DFSSolver(maze.get_maze(), cellN) #DFS solver class
+    maze = Maze(cellN) 
+    dfs = DFSSolver(maze.get_maze(),cellN) #DFS solver class
     bfs = BFSSolver(maze.get_maze(), cellN) #DFS solver class
-    game = Game(window_width, window_height, maze, bfs) # New game
+
+    if choice == "DFS":
+        game = Game(window_width, window_height,maze, dfs) # New game with DFS
+    elif choice == "BFS":
+        game = Game(window_width, window_height,maze, bfs) # New game with BFS
     
     # Start the game
     try:
